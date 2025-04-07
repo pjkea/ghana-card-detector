@@ -44,6 +44,8 @@ jobs:
         run: |
           mkdir -p cloudflare-package
           cp -r dist/* cloudflare-package/
+          mkdir -p cloudflare-package/models
+          cp -r demo/models/* cloudflare-package/models/
           cp package.json cloudflare-package/
           cp README.md cloudflare-package/
       

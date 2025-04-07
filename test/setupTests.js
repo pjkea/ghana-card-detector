@@ -1,6 +1,6 @@
-// Import testing library extensions
-import '@testing-library/jest-dom';
-import 'jest-canvas-mock';
+// test/setupTests.js
+require('@testing-library/jest-dom');
+require('jest-canvas-mock');
 
 // Mock TensorFlow.js
 jest.mock('@tensorflow/tfjs', () => ({
@@ -52,53 +52,57 @@ Object.defineProperty(global.navigator, 'mediaDevices', {
   }
 });
 
-// Mock HTML elements
-class MockHTMLVideoElement extends HTMLVideoElement {
-  constructor() {
-    super();
-    this.videoWidth = 1280;
-    this.videoHeight = 720;
-    this.readyState = 4; // HAVE_ENOUGH_DATA
-    this.srcObject = null;
-    this.play = jest.fn().mockResolvedValue(undefined);
-  }
-}
+// Create a real video element
+const mockVideo = document.createElement('video');
+// Use defineProperty for read-only properties
+Object.defineProperties(mockVideo, {
+  videoWidth: { value: 1280 },
+  videoHeight: { value: 720 },
+  readyState: { value: 4 } // HAVE_ENOUGH_DATA
+});
+mockVideo.play = jest.fn().mockResolvedValue(undefined);
+mockVideo.srcObject = null;
 
-class MockHTMLCanvasElement extends HTMLCanvasElement {
-  constructor() {
-    super();
-    this.getContext = jest.fn().mockReturnValue({
-      clearRect: jest.fn(),
-      drawImage: jest.fn(),
-      fillRect: jest.fn(),
-      fillText: jest.fn(),
-      measureText: jest.fn().mockReturnValue({ width: 200 }),
-      strokeRect: jest.fn(),
-      fillStyle: '',
-      font: '',
-      textAlign: '',
-      lineWidth: 1,
-      strokeStyle: ''
-    });
-    this.toDataURL = jest.fn().mockReturnValue('data:image/jpeg;base64,fake-image-data');
-    this.toBlob = jest.fn().mockImplementation((callback) => {
-      callback(new Blob(['fake-blob-data'], { type: 'image/jpeg' }));
-    });
-  }
-}
+// Create real canvas elements
+const mockDetectionCanvas = document.createElement('canvas');
+const mockCapturedCanvas = document.createElement('canvas'); 
 
-// Register custom elements
-customElements.define('mock-video', MockHTMLVideoElement, { extends: 'video' });
-customElements.define('mock-canvas', MockHTMLCanvasElement, { extends: 'canvas' });
+// Setup canvas contexts
+const mockDetectionContext = {
+  clearRect: jest.fn(),
+  drawImage: jest.fn(),
+  fillRect: jest.fn(),
+  fillText: jest.fn(),
+  measureText: jest.fn().mockReturnValue({ width: 200 }),
+  strokeRect: jest.fn(),
+  fillStyle: '',
+  font: '',
+  textAlign: '',
+  lineWidth: 1,
+  strokeStyle: ''
+};
+
+const mockCapturedContext = {
+  ...mockDetectionContext,
+  toDataURL: jest.fn().mockReturnValue('data:image/jpeg;base64,fake-image-data'),
+};
+
+mockDetectionCanvas.getContext = jest.fn().mockReturnValue(mockDetectionContext);
+mockCapturedCanvas.getContext = jest.fn().mockReturnValue(mockCapturedContext);
+mockCapturedCanvas.toDataURL = jest.fn().mockReturnValue('data:image/jpeg;base64,fake-image-data');
+mockCapturedCanvas.toBlob = jest.fn().mockImplementation((callback) => {
+  callback(new Blob(['fake-blob-data'], { type: 'image/jpeg' }));
+});
 
 // Mock document methods
 document.getElementById = jest.fn().mockImplementation((id) => {
   switch(id) {
     case 'webcam':
-      return new MockHTMLVideoElement();
+      return mockVideo;
     case 'detection-canvas':
+      return mockDetectionCanvas;
     case 'captured-card': 
-      return new MockHTMLCanvasElement();
+      return mockCapturedCanvas;
     case 'status':
     case 'model-status':
     case 'capture-status':

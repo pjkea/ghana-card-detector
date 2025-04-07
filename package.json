@@ -29,13 +29,16 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "@tensorflow/tfjs": "^4.2.0",
-    "@tensorflow/tfjs-tflite": "^0.0.1-alpha.9"
+    "@tensorflow/tfjs": ">=3.0.0",
+    "@tensorflow/tfjs-tflite": ">=0.0.1-alpha.8"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
     "@testing-library/dom": "^9.3.1",
     "@testing-library/jest-dom": "^6.1.4",
     "@types/jest": "^29.5.5",
+    "babel-jest": "^29.7.0",
     "css-loader": "^6.7.3",
     "eslint": "^8.46.0",
     "eslint-plugin-jest": "^27.2.3",
