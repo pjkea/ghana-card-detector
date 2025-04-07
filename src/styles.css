@@ -1,0 +1,211 @@
+:root {
+    --ghana-detector-primary-color: #007bff;
+    --ghana-detector-success-color: #28a745;
+    --ghana-detector-danger-color: #dc3545;
+    --ghana-detector-warning-color: #ffc107;
+    --ghana-detector-dark-color: #343a40;
+    --ghana-detector-light-color: #f8f9fa;
+    --ghana-detector-border-color: #dee2e6;
+}
+
+.ghana-detector-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.ghana-detector-status-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: var(--ghana-detector-light-color);
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ghana-detector-status {
+    font-weight: bold;
+}
+
+.ghana-detector-model-status {
+    color: var(--ghana-detector-primary-color);
+    font-size: 0.9rem;
+}
+
+.ghana-detector-camera-container {
+    margin-bottom: 30px;
+}
+
+.ghana-detector-video-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #000;
+}
+
+.ghana-detector-webcam {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.ghana-detector-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+.ghana-detector-guide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.ghana-detector-card-guide {
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    width: 60%;
+    height: 38%;
+    /* Standard Ghana Card aspect ratio (85.6mm × 54mm) */
+    aspect-ratio: 1.585;
+}
+
+.ghana-detector-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.ghana-detector-btn {
+    padding: 10px 20px;
+    background-color: var(--ghana-detector-primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.ghana-detector-btn:hover {
+    background-color: #0069d9;
+}
+
+.ghana-detector-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.ghana-detector-result-container {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ghana-detector-captured-card {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 15px;
+    border: 1px solid var(--ghana-detector-border-color);
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.ghana-detector-capture-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ghana-detector-capture-status {
+    font-size: 16px;
+    color: #6c757d;
+}
+
+.ghana-detector-send-btn {
+    background-color: var(--ghana-detector-success-color);
+}
+
+.ghana-detector-send-btn:hover {
+    background-color: #218838;
+}
+
+.ghana-detector-instructions {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ghana-detector-instructions ol {
+    padding-left: 20px;
+}
+
+.ghana-detector-instructions li {
+    margin-bottom: 8px;
+}
+
+/* Status colors */
+.ghana-detector-status-loading {
+    color: #6c757d;
+}
+
+.ghana-detector-status-success {
+    color: var(--ghana-detector-success-color);
+}
+
+.ghana-detector-status-error {
+    color: var(--ghana-detector-danger-color);
+}
+
+.ghana-detector-status-warning {
+    color: var(--ghana-detector-warning-color);
+}
+
+.ghana-detector-status-active {
+    color: var(--ghana-detector-primary-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ghana-detector-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .ghana-detector-btn {
+        width: 100%;
+    }
+    
+    .ghana-detector-capture-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .ghana-detector-send-btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghana Card Detector Demo</title>
+    <!-- TensorFlow.js Core -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.2.0"></script>
+    <!-- TFLite Support -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite@0.0.1-alpha.9/dist/tf-tflite.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .demo-header {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-footer {
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .demo-footer a {
+            color: #8cc7ff;
+        }
+    </style>
+</head>
+<body>
+    <header class="demo-header">
+        <h1>Ghana Card Detector Demo</h1>
+        <p>A browser-based ID card detection and capture library</p>
+    </header>
+
+    <div class="ghana-detector-container">
+        <div class="ghana-detector-status-container">
+            <div id="status" class="ghana-detector-status">Initializing detector...</div>
+            <div id="model-status" class="ghana-detector-model-status"></div>
+        </div>
+    
+    <footer class="demo-footer">
+        <p>Ghana Card Detector - JavaScript Library for ID Card Detection</p>
+        <p><a href="https://github.com/yourusername/ghana-card-detector" target="_blank">View on GitHub</a></p>
+    </footer>
+
+    <script src="../dist/index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Create detector instance
+            const detector = new GhanaCardDetector({
+                modelPath: 'models/autocapture.tflite',
+                onCapture: (imageDataUrl) => {
+                    console.log('Card captured successfully!');
+                },
+                onStatusChange: (message, className) => {
+                    console.log(`Status: ${message}`);
+                }
+            });
+            
+            // Initialize detector
+            try {
+                await detector.initialize();
+                // You can auto-start the camera here if desired
+                // await detector.startCamera();
+            } catch (error) {
+                console.error('Failed to initialize detector:', error);
+            }
+        });
+    </script>>
+        
+        <div class="ghana-detector-camera-container">
+            <div id="video-container" class="ghana-detector-video-container">
+                <video id="webcam" class="ghana-detector-webcam" autoplay playsinline></video>
+                <canvas id="detection-canvas" class="ghana-detector-canvas"></canvas>
+                <div class="ghana-detector-guide-overlay">
+                    <div class="ghana-detector-card-guide"></div>
+                </div>
+            </div>
+            
+            <div class="ghana-detector-controls">
+                <button id="start-btn" class="ghana-detector-btn">Start Camera</button>
+                <button id="capture-btn" class="ghana-detector-btn" disabled>Manual Capture</button>
+                <button id="auto-capture-btn" class="ghana-detector-btn" disabled>Enable Auto-Capture</button>
+            </div>
+        </div>
+        
+        <div class="ghana-detector-result-container">
+            <h2>Captured Card</h2>
+            <canvas id="captured-card" class="ghana-detector-captured-card"></canvas>
+            <div class="ghana-detector-capture-info">
+                <div id="capture-status" class="ghana-detector-capture-status">No card captured yet</div>
+                <button id="send-btn" class="ghana-detector-btn ghana-detector-send-btn" disabled>Submit</button>
+            </div>
+        </div>
+        
+        <div class="ghana-detector-instructions">
+            <h3>Instructions</h3>
+            <ol>
+                <li>Click "Start Camera" to access your device camera</li>
+                <li>Position your Ghana Card within the guide frame</li>
+                <li>Enable auto-capture or click "Manual Capture"</li>
+                <li>The detector will automatically capture well-aligned cards</li>
+                <li>Click "Submit" to send the captured card to a backend API</li>
+            </ol>
+        </div>
+    </div
