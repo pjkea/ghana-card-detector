@@ -44,18 +44,20 @@ jobs:
           cp package.json cloudflare-package/
           cp README.md cloudflare-package/
       
-      # Deploy to Cloudflare R2
-      - name: Configure AWS credentials for Cloudflare R2
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.CLOUDFLARE_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-          endpoint-url: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
-      
+      - name: Set up AWS CLI for Cloudflare R2
+        run: |
+          pip install awscli
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.CLOUDFLARE_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+          echo "[default]" > ~/.aws/config
+          echo "region = us-east-1" >> ~/.aws/config
+
       - name: Upload to Cloudflare R2
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          aws s3 sync cloudflare-package/ s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/ghana-card-detector/${PACKAGE_VERSION}/
+          aws s3 sync cloudflare-package/ s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/ghana-card-detector/${PACKAGE_VERSION}/ --endpoint-url https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
           # Also update latest version
-          aws s3 sync cloudflare-package/ s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/ghana-card-detector/latest/
+          aws s3 sync cloudflare-package/ s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/ghana-card-detector/latest/ --endpoint-url https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          
