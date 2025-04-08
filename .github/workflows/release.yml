@@ -34,11 +34,6 @@ jobs:
         # if: github.event_name == 'workflow_dispatch'
         # run: npm version ${{ github.event.inputs.version }} --no-git-tag-version
       
-      - name: Publish to NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      
       # Prepare for Cloudflare R2 deployment
       - name: Create package for Cloudflare
         run: |
